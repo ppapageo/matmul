@@ -1,0 +1,15 @@
+extern "C" int func(float* a, float* b, float** c){
+	int i,j,k,a_addr,b_addr,c_addr;
+#pragma omp parallel for private(i,j,k,a_addr,b_addr,c_addr)
+	for (i = 0; i<$a_h; i++){
+		for (k = 0; k<$a_w; k++){
+			for (j = 0; j<$b_w; j++){
+				a_addr = $a_w*i+k;
+				b_addr = $b_w*k+j;
+				c_addr = $b_w*i+j;
+				(*c)[c_addr] += a[a_addr]*b[b_addr];
+			}
+		}
+	}
+	return 0;
+}
