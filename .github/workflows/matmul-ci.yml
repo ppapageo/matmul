@@ -1,0 +1,48 @@
+name: CI
+
+on: [push]
+
+jobs:
+
+  build-examples:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        compiler:
+          - cc: gcc
+            cxx: g++
+    env:
+      CC: gcc
+      CXX: g++
+      build_dir: build
+    steps:
+      - name: Fetch dependencies
+        run: sudo apt-get install libopenblas-dev
+      - name: Fetch gtest
+        run: |
+         sudo apt-get install libgtest-dev
+         cd /usr/src/gtest && sudo cmake CMakeLists.txt
+         sudo make
+         sudo ln -s /usr/src/gtest/libgtest.a /usr/src/gtest/libgtest.a
+         sudo ln -s /usr/src/gtest/libgtest_main.a /usr/src/gtest/libgtest_main.a:
+         
+      - name: Build & install cpp-codegen
+        run: |
+          git clone https://github.com/ppgpn/cpp-codegen.git
+          cd cpp-codegen
+          mkdir build && cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../installed ..
+          make -j $(nproc)
+          make install
+          
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../installed -DBUILD_TEST=1 -DCppCodegen_DIR=~/cpp-codegen/installed/cmake .. 
+          make -j $(nproc)
+          make install
+          cd -
+          
+      - name: Run unit tests
+        run: cd build && ctest --verbose && cd -
