@@ -34,6 +34,7 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=../installed ..
           make -j $(nproc)
           make install
+          cd ../../
           
       - uses: actions/checkout@v2
       - name: Build
