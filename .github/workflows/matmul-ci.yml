@@ -25,7 +25,7 @@ jobs:
          sudo make
          sudo ln -s /usr/src/gtest/libgtest.a /usr/src/gtest/libgtest.a
          sudo ln -s /usr/src/gtest/libgtest_main.a /usr/src/gtest/libgtest_main.a:
-         
+      - uses: actions/checkout@v2
       - name: Build & install cpp-codegen
         run: |
           git clone https://github.com/ppgpn/cpp-codegen.git
@@ -35,8 +35,7 @@ jobs:
           make -j $(nproc)
           make install
           cd ../../
-          
-      - uses: actions/checkout@v2
+        
       - name: Build
         run: |
           mkdir build && cd build
