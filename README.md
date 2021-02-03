@@ -3,7 +3,8 @@ matmul [![CI](https://github.com/ppgpn/matmul/workflows/CI/badge.svg)](https://g
 
 Matrix multiplication example for testing the use of [cpp-codegen](https://github.com/ppgpn/cpp-codegen) library as a cmake module.
 
-Matrix multiplication code generate with boundary loop substitution is compared against naive and gemm based matrix multiplications.
+Matrix multiplication code generated with boundary loop substitution is compared against naive and gemm based matrix multiplications.
+
 Requirements
 -----------
 gtest, cmake, libopenblas-dev
